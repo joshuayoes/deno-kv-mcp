@@ -1,5 +1,7 @@
 # DenoKV MCP Server
 
+[![JSR](https://jsr.io/badges/@joshuayoes/deno-kv-mcp)](https://jsr.io/@joshuayoes/deno-kv-mcp) [![Score](https://jsr.io/badges/@joshuayoes/deno-kv-mcp/score)](https://jsr.io/@joshuayoes/deno-kv-mcp)
+
 ## Usage with MCP Clients (Recommended)
 
 The easiest way to integrate this server with an MCP client like Claude Desktop or Cursor is to use the published JSR package. Configure your MCP client as follows:
