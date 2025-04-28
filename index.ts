@@ -53,7 +53,10 @@ server.tool(
     try {
       // Parse the value as JSON if it's a string
       const parsedValue = JSON.parse(value);
-      await kv.set(key, parsedValue, { expireIn });
+      const result = await kv.set(key, parsedValue, { expireIn });
+      if (!result.ok) {
+        throw new Error("Commit failed with non-ok status.");
+      }
       return { content: [], isError: false };
     } catch (error) {
       const errorMessage = toError(error).message;
@@ -296,6 +299,9 @@ server.tool(
         JSON.parse(params.value),
         Object.keys(options).length > 0 ? options : undefined
       );
+      if (!result.ok) {
+        throw new Error("Enqueue commit failed with non-ok status.");
+      }
       return {
         content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
         isError: false,
