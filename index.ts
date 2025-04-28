@@ -57,7 +57,12 @@ server.tool(
       if (!result.ok) {
         throw new Error("Commit failed with non-ok status.");
       }
-      return { content: [], isError: false };
+      return {
+        content: [
+          { type: "text", text: `Successfully set key [${key.join(", ")}]` },
+        ],
+        isError: false,
+      };
     } catch (error) {
       const errorMessage = toError(error).message;
       return {
@@ -118,7 +123,15 @@ server.tool(
   async ({ key }) => {
     try {
       await kv.delete(key);
-      return { content: [], isError: false };
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Successfully deleted key [${key.join(", ")}]`,
+          },
+        ],
+        isError: false,
+      };
     } catch (error) {
       const errorMessage = toError(error).message;
       return {
