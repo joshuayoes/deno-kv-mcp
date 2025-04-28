@@ -1,12 +1,35 @@
 {
   "version": "4",
   "specifiers": {
+    "npm:@deno/kv@0.10.0": "0.10.0",
     "npm:@modelcontextprotocol/sdk@1.10.2": "1.10.2_express@5.1.0_zod@3.24.3",
     "npm:@modelcontextprotocol/sdk@1.8.0": "1.8.0_express@5.1.0_zod@3.24.3",
+    "npm:@types/node@*": "22.12.0",
     "npm:zod@3.24.2": "3.24.2",
     "npm:zod@3.24.3": "3.24.3"
   },
   "npm": {
+    "@deno/kv-darwin-arm64@0.10.0": {
+      "integrity": "sha512-A3ZlAtDwustZDPG7F2quF0PLn18qagGdRP7BynaRdyMvbQRZFKODg2MBjtRJIoaDnbodbprnyxFNwIKKHTEgXg=="
+    },
+    "@deno/kv-darwin-x64@0.10.0": {
+      "integrity": "sha512-olIc2rVGat+CdVc4sAoCnaCht3072+Y87rNA3RVDlHSdCf/lCA/72rKHkhLnr2N0NDaZuObgez0q5dlnG81Hvg=="
+    },
+    "@deno/kv-linux-x64-gnu@0.10.0": {
+      "integrity": "sha512-WruhVdvLQmy/IbawcRQlqvqd7ieUbZnKU/0Cxy0y4LXwPQ9SBHeUG6U0YI6+4gN+q26GXBnifEQv6e6ocqS9Qg=="
+    },
+    "@deno/kv-win32-x64-msvc@0.10.0": {
+      "integrity": "sha512-7l9rlxS7KERpnRSXGoot+zXBeaDt4Dt+LShTva+XwuYqQstnxTuo0xLNzt36+nYHtMeVGCxZUzwQFCNp8686Sw=="
+    },
+    "@deno/kv@0.10.0": {
+      "integrity": "sha512-fbQFYsWvTbyjj6QhXOXFzb3AaMuStOTgUQvgoHf0bJ2s8csklV4V5NkGvi/aNH3uqmduYw+LULz9pPerpiwNfA==",
+      "dependencies": [
+        "@deno/kv-darwin-arm64",
+        "@deno/kv-darwin-x64",
+        "@deno/kv-linux-x64-gnu",
+        "@deno/kv-win32-x64-msvc"
+      ]
+    },
     "@modelcontextprotocol/sdk@1.10.2_express@5.1.0_zod@3.24.3": {
       "integrity": "sha512-rb6AMp2DR4SN+kc6L1ta2NCpApyA9WYNx3CrTSZvGxq9wH71bRur+zRqPfg0vQ9mjywR7qZdX2RGHOPq3ss+tA==",
       "dependencies": [
@@ -35,6 +58,12 @@
         "raw-body",
         "zod-to-json-schema",
         "zod@3.24.3"
+      ]
+    },
+    "@types/node@22.12.0": {
+      "integrity": "sha512-Fll2FZ1riMjNmlmJOdAyY5pUbkftXslB5DgEzlIuNaiWhXd00FhWxVC/r4yV/4wBb9JfImTu+jiSvXTkJ7F/gA==",
+      "dependencies": [
+        "undici-types"
       ]
     },
     "accepts@2.0.0": {
@@ -460,6 +489,9 @@
         "mime-types"
       ]
     },
+    "undici-types@6.20.0": {
+      "integrity": "sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg=="
+    },
     "unpipe@1.0.0": {
       "integrity": "sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ=="
     },
@@ -490,6 +522,7 @@
   },
   "workspace": {
     "dependencies": [
+      "npm:@deno/kv@0.10.0",
       "npm:@modelcontextprotocol/sdk@1.10.2",
       "npm:zod@3.24.3"
     ]

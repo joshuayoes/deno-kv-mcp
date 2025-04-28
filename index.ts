@@ -1,18 +1,30 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import process from "node:process";
 
-const DENO_KV_PATH = Deno.env.get("DENO_KV_PATH");
+import type { Kv, KvKey, KvListOptions, KvListSelector } from "@deno/kv";
+
+const DENO_KV_PATH = process.env.DENO_KV_PATH;
 if (!DENO_KV_PATH) {
   console.error("DENO_KV_PATH must be a file path or remote url");
-  Deno.exit(1);
+  process.exit(1);
 }
 
-if (DENO_KV_PATH.startsWith("http") && !Deno.env.get("DENO_KV_ACCESS_TOKEN")) {
+const isDeno = typeof Deno !== "undefined";
+
+if (DENO_KV_PATH.startsWith("http") && !process.env.DENO_KV_ACCESS_TOKEN) {
   console.error(
-    "DENO_KV_PATH is a remote url but DENO_KV_ACCESS_TOKEN is not set in environment"
+    "DENO_KV_PATH is a remote url but DENO_KV_ACCESS_TOKEN is not set in environment (required for Deno KV)"
   );
-  Deno.exit(1);
+  process.exit(1);
+}
+
+if (DENO_KV_PATH.startsWith("http") && !process.env.DENO_KV_ACCESS_TOKEN) {
+  console.error(
+    "DENO_KV_PATH is a remote url but DENO_KV_ACCESS_TOKEN is not set in environment (required for Node.js REST API access)"
+  );
+  process.exit(1);
 }
 
 function toError(input: unknown): Error {
@@ -29,7 +41,9 @@ function toError(input: unknown): Error {
   return new Error(JSON.stringify(input));
 }
 
-const kv = await Deno.openKv(DENO_KV_PATH);
+const kv = isDeno
+  ? ((await Deno.openKv(DENO_KV_PATH)) as Kv)
+  : await import("@deno/kv").then((m) => m.openKv(DENO_KV_PATH));
 
 const server = new McpServer({
   name: "denokv",
@@ -228,7 +242,7 @@ server.tool(
   async (params) => {
     try {
       // Construct the selector from the parameters
-      let selector = {} as Deno.KvListSelector;
+      let selector = {} as KvListSelector;
       if (params.prefix) {
         selector = { prefix: params.prefix };
       }
@@ -266,7 +280,7 @@ server.tool(
       }
 
       // Construct options
-      const options: Deno.KvListOptions = {};
+      const options: KvListOptions = {};
       if (params.limit) options.limit = params.limit;
       if (params.consistency) options.consistency = params.consistency;
       if (params.batchSize) options.batchSize = params.batchSize;
@@ -328,10 +342,15 @@ server.tool(
   async (params) => {
     try {
       // Construct options object from flat parameters
-      const options = {} as NonNullable<Parameters<typeof kv.enqueue>[1]>;
+      const options: {
+        delay?: number;
+        keysIfUndelivered?: KvKey[];
+        backoffSchedule?: number[];
+      } = {};
       if (params.delay !== undefined) options.delay = params.delay;
       if (params.keysIfUndelivered !== undefined)
-        options.keysIfUndelivered = params.keysIfUndelivered;
+        // Need to cast keysIfUndelivered as Deno.KvKey[] might not be directly assignable from string[][]
+        options.keysIfUndelivered = params.keysIfUndelivered as KvKey[];
       if (params.backoffSchedule !== undefined)
         options.backoffSchedule = params.backoffSchedule;
 
@@ -418,23 +437,23 @@ async function runServer() {
 
 runServer().catch((error) => {
   console.error("Failed to start Deno KV MCP Server:", error);
-  Deno.exit(1);
+  process.exit(1);
 });
 
-// Graceful shutdown on termination signals
-const signals: Deno.Signal[] = ["SIGINT", "SIGTERM"];
+// Graceful shutdown using process.on for broader compatibility
+const signals: NodeJS.Signals[] = ["SIGINT", "SIGTERM"];
 for (const signal of signals) {
-  Deno.addSignalListener(signal, () => {
+  process.on(signal, () => {
     console.log(`Received ${signal}, closing server...`);
     server
       .close()
       .then(() => {
         console.log("Server closed successfully.");
-        Deno.exit(0);
+        process.exit(0);
       })
       .catch((error) => {
         console.error("Error closing server:", error);
-        Deno.exit(1);
+        process.exit(1);
       });
   });
 }

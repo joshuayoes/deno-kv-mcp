@@ -4,8 +4,10 @@
   "unstable": ["kv"],
   "license": "MIT",
   "exports": "./index.ts",
+  "nodeModulesDir": "auto",
   "imports": {
     "@modelcontextprotocol/sdk": "npm:@modelcontextprotocol/sdk@1.10.2",
-    "zod": "npm:zod@3.24.3"
+    "zod": "npm:zod@3.24.3",
+    "@deno/kv": "npm:@deno/kv@0.10.0"
   }
 }
