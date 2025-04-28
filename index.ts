@@ -4,13 +4,13 @@ import { z } from "zod";
 
 const DENO_KV_PATH = Deno.env.get("DENO_KV_PATH");
 if (!DENO_KV_PATH) {
-  console.error("DENO_KV_PATH is not set");
+  console.error("DENO_KV_PATH must be a file path or remote url");
   Deno.exit(1);
 }
 
 if (DENO_KV_PATH.startsWith("http") && !Deno.env.get("DENO_KV_ACCESS_TOKEN")) {
   console.error(
-    "DENO_KV_ACCESS_TOKEN is remote url but not set in environment"
+    "DENO_KV_PATH is a remote url but DENO_KV_ACCESS_TOKEN is not set in environment"
   );
   Deno.exit(1);
 }
@@ -397,5 +397,31 @@ server.tool(
   }
 );
 
-const transport = new StdioServerTransport();
-await server.connect(transport);
+async function runServer() {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  console.log("Deno KV MCP Server connected via stdio");
+}
+
+runServer().catch((error) => {
+  console.error("Failed to start Deno KV MCP Server:", error);
+  Deno.exit(1);
+});
+
+// Graceful shutdown on termination signals
+const signals: Deno.Signal[] = ["SIGINT", "SIGTERM"];
+for (const signal of signals) {
+  Deno.addSignalListener(signal, () => {
+    console.log(`Received ${signal}, closing server...`);
+    server
+      .close()
+      .then(() => {
+        console.log("Server closed successfully.");
+        Deno.exit(0);
+      })
+      .catch((error) => {
+        console.error("Error closing server:", error);
+        Deno.exit(1);
+      });
+  });
+}
