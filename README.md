@@ -88,7 +88,6 @@ This server provides the following tools:
   - `batchSize` (integer, positive, optional): Number of entries to fetch per batch internally.
   - `reverse` (boolean, optional): Whether to reverse the order of entries.
   - _Note:_ Must provide `prefix`, `start`, or (`start` and `end`) parameter. `end` requires `start` or `prefix`.
-- \*\*`enqueue`
 
 ## Local Development Setup
 
