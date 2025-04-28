@@ -1,0 +1,85 @@
+---
+description: Deno lint error guidance
+globs: 
+alwaysApply: false
+---
+See @https://docs.deno.com/runtime/reference/cli/lint for how to use lint cli.
+See @https://docs.deno.com/lint/ for all linting rules related to deno.
+
+## How to ignore
+Ignore directives 
+File level 
+To ignore a whole file use // deno-lint-ignore-file at the top of the file:
+
+// deno-lint-ignore-file
+
+function foo(): any {
+  // ...
+}
+
+You can also specify the reason for ignoring the file:
+
+// deno-lint-ignore-file -- reason for ignoring
+
+function foo(): any {
+  // ...
+}
+
+The ignore directive must be placed before the first statement or declaration:
+
+// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+
+/**
+ * Some JS doc
+ */
+
+// deno-lint-ignore-file
+
+import { bar } from "./bar.js";
+
+function foo(): any {
+  // ...
+}
+
+You can also ignore certain diagnostics in the whole file:
+
+// deno-lint-ignore-file no-explicit-any no-empty
+
+function foo(): any {
+  // ...
+}
+
+If there are multiple // deno-lint-ignore-file directives, all but the first one are ignored:
+
+// This is effective
+// deno-lint-ignore-file no-explicit-any no-empty
+
+// But this is NOT effective
+// deno-lint-ignore-file no-debugger
+
+function foo(): any {
+  debugger; // not ignored!
+}
+
+Line level 
+To ignore specific diagnostics use // deno-lint-ignore <codes...> on the preceding line of the offending line.
+
+// deno-lint-ignore no-explicit-any
+function foo(): any {
+  // ...
+}
+
+// deno-lint-ignore no-explicit-any explicit-function-return-type
+function bar(a: any) {
+  // ...
+}
+
+You must specify the names of the rules to be ignored.
+
+You can also specify the reason for ignoring the diagnostic:
+
+// deno-lint-ignore no-explicit-any -- reason for ignoring
+function foo(): any {
+  // ...
+}
+
