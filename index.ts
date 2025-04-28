@@ -38,6 +38,7 @@ const server = new McpServer({
 
 server.tool(
   "set",
+  "Set a key-value pair in the Deno KV store.",
   {
     key: z.array(z.string()).describe("The key to set in the key-value store"),
     value: z
@@ -71,6 +72,7 @@ server.tool(
 
 server.tool(
   "get",
+  "Get a value by key from the Deno KV store.",
   {
     key: z
       .array(z.string())
@@ -90,6 +92,7 @@ server.tool(
 
 server.tool(
   "delete",
+  "Delete a key-value pair from the Deno KV store.",
   {
     key: z
       .array(z.string())
@@ -103,6 +106,7 @@ server.tool(
 
 server.tool(
   "getMany",
+  "Get multiple values by keys from the Deno KV store.",
   {
     keys: z
       .array(z.array(z.string()))
@@ -141,6 +145,7 @@ server.tool(
 
 server.tool(
   "list",
+  "List key-value pairs in the Deno KV store based on a selector.",
   {
     prefix: z
       .array(z.string())
@@ -257,6 +262,7 @@ server.tool(
 
 server.tool(
   "enqueue",
+  "Enqueue a message into the Deno KV queue.",
   {
     value: z
       .string()
@@ -311,6 +317,7 @@ server.tool(
 
 server.tool(
   "reset",
+  "Delete all keys from the Deno KV store (requires confirmation).",
   {
     confirmation: z
       .literal("yes")
