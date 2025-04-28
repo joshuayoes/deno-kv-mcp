@@ -48,3 +48,36 @@ deno run --unstable-kv --allow-env --allow-net --allow-read --allow-write --allo
 ```
 
 Ensure the required environment variables are set before running the command.
+
+## Available Tools
+
+This server provides the following tools:
+
+- **`set`**: Set a key-value pair in the Deno KV store.
+  - `key` (array of strings): The key to set.
+  - `value` (string): The value to set (JSON string).
+  - `expireIn` (number, optional): Time-to-live (TTL) for the key in milliseconds.
+- **`get`**: Get a value by key from the Deno KV store.
+  - `key` (array of strings): The key to get.
+  - `consistency` (enum: "strong" | "eventual", optional): Consistency level for the read.
+- **`delete`**: Delete a key-value pair from the Deno KV store.
+  - `key` (array of strings): The key to delete.
+- **`getMany`**: Get multiple values by keys from the Deno KV store.
+  - `keys` (array of array of strings): The keys to get.
+  - `consistency` (enum: "strong" | "eventual", optional): Consistency level for the read.
+- **`list`**: List key-value pairs based on a selector.
+  - `prefix` (array of strings, optional): Key prefix to list (e.g., `["users"]`).
+  - `start` (array of strings, optional): Start key for range queries (e.g., `["orders", "2023"]`).
+  - `end` (array of strings, optional): End key for range queries (e.g., `["orders", "2024"]`).
+  - `limit` (integer, positive, optional): Maximum number of entries to return.
+  - `consistency` (enum: "strong" | "eventual", optional): Consistency level for the list operation.
+  - `batchSize` (integer, positive, optional): Number of entries to fetch per batch internally.
+  - `reverse` (boolean, optional): Whether to reverse the order of entries.
+  - _Note:_ Must provide `prefix`, `start`, or (`start` and `end`) parameter. `end` requires `start` or `prefix`.
+- **`enqueue`**: Enqueue a message into the Deno KV queue.
+  - `value` (string): The value to enqueue (JSON string).
+  - `delay` (integer, non-negative, optional): Delay in milliseconds before the message is delivered.
+  - `keysIfUndelivered` (array of array of strings, optional): Keys to set if the message is not successfully delivered.
+  - `backoffSchedule` (array of positive integers, optional): Retry backoff schedule in milliseconds.
+- **`reset`**: Delete **all** keys from the Deno KV store (requires confirmation).
+  - `confirmation` (literal: "yes"): Must be 'yes' to confirm deletion.
