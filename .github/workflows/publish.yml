@@ -1,19 +1,24 @@
-name: Publish
+name: Publish JSR Package
+
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published] # Trigger the workflow when a release is published
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
-      id-token: write
+      id-token: write # Necessary for OIDC authentication with JSR
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Publish package
-        run: npx jsr publish
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Publish package to JSR
+        run: deno publish
