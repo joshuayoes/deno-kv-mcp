@@ -86,10 +86,24 @@ server.tool(
       .describe("The consistency level for the read operation"),
   },
   async ({ key, consistency }) => {
-    const result = await kv.get(key, { consistency });
-    return {
-      content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
-    };
+    try {
+      const result = await kv.get(key, { consistency });
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        isError: false,
+      };
+    } catch (error) {
+      const errorMessage = toError(error).message;
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Failed to get key [${key.join(", ")}]: ${errorMessage}`,
+          },
+        ],
+        isError: true,
+      };
+    }
   }
 );
 
@@ -102,8 +116,21 @@ server.tool(
       .describe("The key to delete from the key-value store"),
   },
   async ({ key }) => {
-    await kv.delete(key);
-    return { content: [] };
+    try {
+      await kv.delete(key);
+      return { content: [], isError: false };
+    } catch (error) {
+      const errorMessage = toError(error).message;
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Failed to delete key [${key.join(", ")}]: ${errorMessage}`,
+          },
+        ],
+        isError: true,
+      };
+    }
   }
 );
 
