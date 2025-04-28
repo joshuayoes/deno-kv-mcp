@@ -61,6 +61,8 @@ We can run this in Node!
 
 Make sure to replace the `env` values with your specific details.
 
+If you really want to get crazy, replace `npx` with `bunx`.
+
 ## Available Tools
 
 This server provides the following tools:
@@ -145,6 +147,8 @@ You may need to run `deno install` first to add a `node_modules` folder.
 ```
 
 Make sure to replace `/path/to/your/mcp-deno-kv/index.ts` and the `env` values with your specific details.
+
+If you really want to get crazy, replace `npx` with `bunx`.
 
 ## Environment Variables
 
