@@ -34,6 +34,33 @@ The easiest way to integrate this server with an MCP client like Claude Desktop 
 
 Make sure to replace the `env` values with your specific details.
 
+### Node
+
+After figuring out that:
+
+- [Deno has an official client library for KV that works with Node](https://docs.deno.com/deploy/kv/manual/node/)
+- Deno has a [compatibility layer with Node](https://docs.deno.com/api/node/),
+- Even though [jsr packages do not work natively with npx](https://github.com/jsr-io/jsr/issues/157), thanks to this [xjsr npm package](https://www.npmjs.com/package/xjsr), we can run jsr packages using npx and node.
+
+We can run this in Node!
+
+```json
+{
+  "mcpServers": {
+    "denokv": {
+      "command": "npx",
+      "args": ["xjsr", "@joshuayoes/deno-kv-mcp@latest"],
+      "env": {
+        "DENO_KV_PATH": "path/to/your/kv.db OR https://api.deno.com/databases/<UUID>/connect",
+        "DENO_KV_ACCESS_TOKEN": "<YOUR_DENO_DEPLOY_ACCESS_TOKEN>" // Only needed for remote DB
+      }
+    }
+  }
+}
+```
+
+Make sure to replace the `env` values with your specific details.
+
 ## Available Tools
 
 This server provides the following tools:
@@ -95,7 +122,9 @@ Make sure to replace `/path/to/your/mcp-deno-kv/index.ts` and the `env` values w
 
 ### Node
 
-Since [Deno has an official client library for KV that works with Node](https://docs.deno.com/deploy/kv/manual/node/) and has a [compatibility layer with Node](https://docs.deno.com/api/node/), this MCP server can also be run using node ([>=v22.7.0](https://nodejs.org/api/typescript.html#:~:text=enabled%20by%20default.-,v22.7.0,-Added%20%2D%2Dexperimental%2Dtransform))!
+Using node ([>=v22.7.0](https://nodejs.org/api/typescript.html#:~:text=enabled%20by%20default.-,v22.7.0,-Added%20%2D%2Dexperimental%2Dtransform)), we can also run the server directly without a build step!
+
+You may need to run `deno install` first to add a `node_modules` folder.
 
 ```json
 {
