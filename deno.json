@@ -1,10 +1,10 @@
 {
-  "name": "@divy/mcp-deno-kv",
+  "name": "@joshuayoes/mcp-deno-kv",
   "version": "0.1.0",
   "license": "MIT",
   "exports": "./index.ts",
   "imports": {
-    "@modelcontextprotocol/sdk": "npm:@modelcontextprotocol/sdk@1.8.0",
-    "zod": "npm:zod@3.24.2"
+    "@modelcontextprotocol/sdk": "npm:@modelcontextprotocol/sdk@1.10.2",
+    "zod": "npm:zod@3.24.3"
   }
 }
