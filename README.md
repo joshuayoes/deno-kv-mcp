@@ -1,8 +1,8 @@
 # DenoKV MCP Server
 
-## MCP Configuration Example
+## Usage with MCP Clients (Recommended)
 
-Below is an example configuration for integrating this server with an MCP client like Claude Desktop or Cursor:
+The easiest way to integrate this server with an MCP client like Claude Desktop or Cursor is to use the published JSR package. Configure your MCP client as follows:
 
 ```json
 {
@@ -17,11 +17,41 @@ Below is an example configuration for integrating this server with an MCP client
         "--allow-read",
         "--allow-write",
         "--allow-run",
-        "/path/to/your/mcp-deno-kv/index.ts" # Replace with the actual path
+        "jsr:@joshuayoes/deno-kv-mcp"
       ],
       "env": {
         "DENO_KV_PATH": "path/to/your/kv.db OR https://api.deno.com/databases/<UUID>/connect",
-        "DENO_KV_ACCESS_TOKEN": "<YOUR_DENO_DEPLOY_ACCESS_TOKEN>" # Only needed for remote DB
+        "DENO_KV_ACCESS_TOKEN": "<YOUR_DENO_DEPLOY_ACCESS_TOKEN>" // Only needed for remote DB
+      }
+    }
+  }
+}
+```
+
+Make sure to replace the `env` values with your specific details.
+
+## Local Development Setup
+
+If you prefer to run the server from a local clone of this repository (e.g., for development or testing), use the following configuration instead:
+
+```json
+{
+  "mcpServers": {
+    "denokv": {
+      "command": "deno",
+      "args": [
+        "run",
+        "--unstable-kv",
+        "--allow-env",
+        "--allow-net",
+        "--allow-read",
+        "--allow-write",
+        "--allow-run",
+        "/path/to/your/mcp-deno-kv/index.ts" // Replace with the actual path to index.ts
+      ],
+      "env": {
+        "DENO_KV_PATH": "path/to/your/kv.db OR https://api.deno.com/databases/<UUID>/connect",
+        "DENO_KV_ACCESS_TOKEN": "<YOUR_DENO_DEPLOY_ACCESS_TOKEN>" // Only needed for remote DB
       }
     }
   }
