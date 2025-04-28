@@ -1,6 +1,7 @@
 {
   "name": "@joshuayoes/deno-kv-mcp",
   "version": "1.0.0",
+  "unstable": ["kv"],
   "license": "MIT",
   "exports": "./index.ts",
   "imports": {
