@@ -37,7 +37,7 @@ const server = new McpServer({
 });
 
 server.tool(
-  "denokv_set",
+  "set",
   {
     key: z.array(z.string()).describe("The key to set in the key-value store"),
     value: z
@@ -70,7 +70,7 @@ server.tool(
 );
 
 server.tool(
-  "denokv_get",
+  "get",
   {
     key: z
       .array(z.string())
@@ -89,7 +89,7 @@ server.tool(
 );
 
 server.tool(
-  "denokv_delete",
+  "delete",
   {
     key: z
       .array(z.string())
@@ -102,7 +102,7 @@ server.tool(
 );
 
 server.tool(
-  "denokv_getMany",
+  "getMany",
   {
     keys: z
       .array(z.array(z.string()))
@@ -140,7 +140,7 @@ server.tool(
 );
 
 server.tool(
-  "denokv_list",
+  "list",
   {
     prefix: z
       .array(z.string())
@@ -256,7 +256,7 @@ server.tool(
 );
 
 server.tool(
-  "denokv_enqueue",
+  "enqueue",
   {
     value: z
       .string()
@@ -310,7 +310,7 @@ server.tool(
 );
 
 server.tool(
-  "denokv_reset",
+  "reset",
   {
     confirmation: z
       .literal("yes")
